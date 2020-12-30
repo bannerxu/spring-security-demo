@@ -2,7 +2,6 @@ package top.banner.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,7 +16,6 @@ import javax.sql.DataSource;
 
 
 @Configuration
-@Order(90)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -25,8 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Resource
-    private PersistentTokenRepository persistentTokenRepository;
+    //    @Resource
+//    private PersistentTokenRepository persistentTokenRepository;
     @Resource
     private DataSource dataSource;
     @Resource
@@ -82,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //记住我
         http.rememberMe()
                 //设置数据源
-                .tokenRepository(persistentTokenRepository)
+                .tokenRepository(persistentTokenRepository())
                 //自定义入参名
                 //.rememberMeParameter("");
                 //超时时间
@@ -106,7 +104,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JdbcTokenRepositoryImpl persistentTokenRepository = new JdbcTokenRepositoryImpl();
         persistentTokenRepository.setDataSource(dataSource);
         //每次启动时自动建表，第一次之后就关掉。
-        persistentTokenRepository.setCreateTableOnStartup(true);
+//        persistentTokenRepository.setCreateTableOnStartup(true);
         return persistentTokenRepository;
     }
 
