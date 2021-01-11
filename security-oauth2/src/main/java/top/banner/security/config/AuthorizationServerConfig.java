@@ -1,10 +1,13 @@
 package top.banner.security.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import top.banner.security.service.UserService;
 
 import javax.annotation.Resource;
 
@@ -13,6 +16,17 @@ import javax.annotation.Resource;
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     @Resource
     private PasswordEncoder passwordEncoder;
+    @Resource
+    private AuthenticationManager authenticationManager;
+    @Resource
+    private UserService userService;
+
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints
+                .authenticationManager(authenticationManager)
+                .userDetailsService(userService);
+    }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -29,7 +43,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .redirectUris("http://www.baidu.com")
                 //授权范围
                 .scopes("all")
-                //授权类型
-                .authorizedGrantTypes("authorization_code");
+                /*
+                 * 授权类型
+                 * authorization_code 授权码模式
+                 * password 密码模式
+                 */
+                .authorizedGrantTypes("authorization_code", "password");
     }
 }
