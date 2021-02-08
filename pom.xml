@@ -24,8 +24,9 @@
 
     <modules>
         <module>simple-security</module>
-
         <module>security-oauth2</module>
+        <module>jjwt</module>
+        <module>security-oauth2-jwt</module>
     </modules>
 
 
