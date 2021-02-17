@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -60,24 +61,37 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
         clients.inMemory()
                 //客户端id
-                .withClient("client")
+                .withClient("admin")
                 //秘钥
                 .secret(passwordEncoder.encode("112233"))
-                //重定向地址
-                .redirectUris("http://www.baidu.com")
+//                //重定向地址
+//                .redirectUris("http://www.baidu.com")
+                //单点登录时配置
+                .redirectUris("http://localhost:8081/login")
                 //授权范围
                 .scopes("all")
                 //设置token失效时间
                 .accessTokenValiditySeconds(60)
                 //设置刷新令牌过期时间
                 .refreshTokenValiditySeconds(86400)
+                //自动授权配置
+                .autoApprove(true)
                 /*
                  * 授权类型
                  * authorization_code 授权码模式
                  * password 密码模式
                  * refresh_token 刷新时间
                  */
-                .authorizedGrantTypes("authorization_code", "password", "refresh_token");
+                .authorizedGrantTypes("authorization_code", "password", "refresh_token")
+        //配置多个客户端
+        //.and()
+        //.inMemory()
+        ;
+    }
 
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer security) {
+        // 获取密钥需要身份认证，使用单点登录时必须配置
+        security.tokenKeyAccess("isAuthenticated()");
     }
 }
