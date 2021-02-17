@@ -67,11 +67,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .redirectUris("http://www.baidu.com")
                 //授权范围
                 .scopes("all")
+                //设置token失效时间
+                .accessTokenValiditySeconds(60)
+                //设置刷新令牌过期时间
+                .refreshTokenValiditySeconds(86400)
                 /*
                  * 授权类型
                  * authorization_code 授权码模式
                  * password 密码模式
+                 * refresh_token 刷新时间
                  */
-                .authorizedGrantTypes("authorization_code", "password");
+                .authorizedGrantTypes("authorization_code", "password", "refresh_token");
+
     }
 }
