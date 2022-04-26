@@ -28,17 +28,15 @@
         <module>jjwt</module>
         <module>security-oauth2-jwt</module>
         <module>oauth2client-sso</module>
+        <module>security</module>
+        <module>web</module>
     </modules>
 
 
     <repositories>
         <repository>
-            <id>liMao</id>
-            <url>http://gitlab.limaohuyu.com:8081/repository/public/</url>
-        </repository>
-        <repository>
             <id>ali</id>
-            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <url>https://maven.aliyun.com/repository/public</url>
         </repository>
 
     </repositories>
