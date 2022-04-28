@@ -1,6 +1,7 @@
 package top.banner.security.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -17,17 +18,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import top.banner.security.component.*;
 import top.banner.security.util.JwtTokenUtil;
 
-import javax.annotation.Resource;
-
 
 /**
  * 对SpringSecurity配置类的扩展，支持自定义白名单资源路径和查询用户逻辑
  * Created by macro on 2019/11/5.
  */
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class BaseSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Resource
+    @Autowired(required = false)
     private DynamicSecurityService dynamicSecurityService;
+
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
         return new JwtAuthenticationTokenFilter();
     }

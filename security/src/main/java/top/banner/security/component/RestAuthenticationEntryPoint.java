@@ -1,6 +1,7 @@
 package top.banner.security.component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
@@ -20,7 +21,8 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setHeader("Cache-Control", "no-cache");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        new ObjectMapper().writeValue(response.getWriter(), authException.getMessage());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        new ObjectMapper().writeValue(response.getWriter(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
         response.getWriter().flush();
     }
 }
